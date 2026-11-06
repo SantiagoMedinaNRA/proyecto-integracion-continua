@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Api.UnitTests/Api.UnitTests.csproj" />
+    <Project Path="Tests/Web.UnitTests/Web.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Web/">
+    <Project Path="Web/Web.Blazor.csproj" />
+  </Folder>
+  <Project Path="Api/Api.csproj" />
+  <Project Path="Shared/Shared.csproj" />
+</Solution>
