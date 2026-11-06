@@ -1,0 +1,54 @@
+@page "/books"
+@inject HttpClient Http
+@using Shared.Models
+
+<div class="container mt-5">
+    <h1>Harry Potter Books</h1>
+
+    @if (books == null)
+    {
+        <p class="alert alert-info">Loading books...</p>
+    }
+    else if (books.Count == 0)
+    {
+        <p class="alert alert-warning">No books found.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var book in books)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-text">
+                                <strong>Author:</strong> @book.Author<br>
+                                <strong>Pages:</strong> @book.Pages<br>
+                                <strong>Release Date:</strong> @book.ReleaseDate.ToShortDateString()
+                            </p>
+                            <p class="card-text text-muted small">@book.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<BookResponse>? books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            books = await Http.GetFromJsonAsync<List<BookResponse>>("https://localhost:5000/api/books");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading books: {ex.Message}");
+            books = [];
+        }
+    }
+}

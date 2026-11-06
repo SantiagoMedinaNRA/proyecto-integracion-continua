@@ -1,0 +1,62 @@
+@page "/characters"
+@inject HttpClient Http
+@using Shared.Models
+
+<div class="container mt-5">
+    <h1>Harry Potter Characters</h1>
+
+    @if (characters == null)
+    {
+        <p class="alert alert-info">Loading characters...</p>
+    }
+    else if (characters.Count == 0)
+    {
+        <p class="alert alert-warning">No characters found.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var character in characters)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@character.Name</h5>
+                            <p class="card-text">
+                                @if (!string.IsNullOrEmpty(character.House))
+                                {
+                                    <div><strong>House:</strong> @character.House</div>
+                                }
+                                @if (!string.IsNullOrEmpty(character.Patronus))
+                                {
+                                    <div><strong>Patronus:</strong> @character.Patronus</div>
+                                }
+                                @if (!string.IsNullOrEmpty(character.Wand))
+                                {
+                                    <div><strong>Wand:</strong> @character.Wand</div>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<CharacterResponse>? characters;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            characters = await Http.GetFromJsonAsync<List<CharacterResponse>>("https://localhost:5000/api/characters");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading characters: {ex.Message}");
+            characters = [];
+        }
+    }
+}

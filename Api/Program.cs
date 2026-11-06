@@ -13,6 +13,7 @@ builder.Services.AddHttpClient<IPotterDbBroker, PotterDbBroker>();
 
 builder.Services.AddScoped<ICacheBroker, CacheBroker>();
 builder.Services.AddScoped<IBooksService, BooksService>();
+builder.Services.AddScoped<ICharactersService, CharactersService>();
 
 var app = builder.Build();
 
