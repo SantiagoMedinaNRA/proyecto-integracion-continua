@@ -9,3 +9,8 @@ global using Microsoft.Extensions.Caching.Memory;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
+global using Serilog;
+global using Api.Brokers;
+global using Api.Core.Services;
+global using Shared.Models;
+global using Shared.Constants;
