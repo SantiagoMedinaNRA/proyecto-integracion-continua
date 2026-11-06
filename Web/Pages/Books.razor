@@ -1,5 +1,5 @@
 @page "/books"
-@inject HttpClient Http
+@inject IApiClient ApiClient
 @using Shared.Models
 
 <div class="container mt-5">
@@ -43,7 +43,7 @@
     {
         try
         {
-            books = await Http.GetFromJsonAsync<List<BookResponse>>("https://localhost:6000/api/books");
+            books = await ApiClient.GetBooksAsync();
         }
         catch (Exception ex)
         {

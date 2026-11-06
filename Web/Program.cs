@@ -2,7 +2,9 @@ using Web.Blazor.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+builder.Services.AddHttpClient<IApiClient, ApiClient>();
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

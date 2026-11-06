@@ -6,3 +6,7 @@ global using System.Text.Json;
 global using System.Threading.Tasks;
 global using Microsoft.AspNetCore.Components;
 global using Microsoft.AspNetCore.Components.Web;
+global using Microsoft.Extensions.Options;
+global using Shared.Models;
+global using Shared.Configuration;
+global using Web.Services;

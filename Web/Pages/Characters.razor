@@ -1,5 +1,5 @@
 @page "/characters"
-@inject HttpClient Http
+@inject IApiClient ApiClient
 @using Shared.Models
 
 <div class="container mt-5">
@@ -51,7 +51,7 @@
     {
         try
         {
-            characters = await Http.GetFromJsonAsync<List<CharacterResponse>>("https://localhost:6000/api/characters");
+            characters = await ApiClient.GetCharactersAsync();
         }
         catch (Exception ex)
         {

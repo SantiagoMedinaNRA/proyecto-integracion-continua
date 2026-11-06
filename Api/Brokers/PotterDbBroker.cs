@@ -4,13 +4,11 @@ public class PotterDbBroker : IPotterDbBroker
 {
     private readonly HttpClient httpClient;
     private readonly ILogger<PotterDbBroker> logger;
-    private readonly IConfiguration configuration;
 
-    public PotterDbBroker(HttpClient httpClient, ILogger<PotterDbBroker> logger, IConfiguration configuration)
+    public PotterDbBroker(HttpClient httpClient, ILogger<PotterDbBroker> logger)
     {
         this.httpClient = httpClient;
         this.logger = logger;
-        this.configuration = configuration;
     }
 
     public async ValueTask<List<BookResponse>> GetBooksAsync()
