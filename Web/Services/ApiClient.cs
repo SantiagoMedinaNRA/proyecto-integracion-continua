@@ -4,7 +4,7 @@ public interface IApiClient
 {
     ValueTask<List<BookDto>> GetBooksAsync();
     ValueTask<BookDto> GetBookByIdAsync(string bookId);
-    ValueTask<List<CharacterDto>> GetCharactersAsync();
+    ValueTask<List<CharacterDto>> GetCharactersAsync(int pageNumber = 1, int pageSize = 20);
     ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId);
 }
 
@@ -53,18 +53,18 @@ public class ApiClient : IApiClient
         }
     }
 
-    public async ValueTask<List<CharacterDto>> GetCharactersAsync()
+    public async ValueTask<List<CharacterDto>> GetCharactersAsync(int pageNumber = 1, int pageSize = 20)
     {
         try
         {
-            string url = $"{apiSettings.BaseUrl}/api/characters";
-            logger.LogInformation("Fetching characters from {Url}", url);
+            string url = $"{apiSettings.BaseUrl}/api/characters?pageNumber={pageNumber}&pageSize={pageSize}";
+            logger.LogInformation("Fetching characters from {Url} (page {PageNumber}, size {PageSize})", url, pageNumber, pageSize);
             var response = await httpClient.GetFromJsonAsync<List<CharacterDto>>(url);
             return response ?? [];
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Error fetching characters");
+            logger.LogError(exception, "Error fetching characters (page {PageNumber})", pageNumber);
             throw;
         }
     }

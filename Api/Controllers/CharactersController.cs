@@ -16,12 +16,12 @@ public class CharactersController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<CharacterDto>>> GetCharacters()
+    public async Task<ActionResult<IEnumerable<CharacterDto>>> GetCharacters([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
         try
         {
-            logger.LogInformation("GET /api/characters");
-            List<CharacterDto> characters = await charactersService.GetCharactersAsync();
+            logger.LogInformation("GET /api/characters?pageNumber={PageNumber}&pageSize={PageSize}", pageNumber, pageSize);
+            List<CharacterDto> characters = await charactersService.GetCharactersAsync(pageNumber, pageSize);
             return Ok(characters);
         }
         catch (Exception exception)

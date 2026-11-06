@@ -1,7 +1,51 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Potter Academy - Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 20px; text-align: center; border-radius: 10px; margin-bottom: 40px;">
+    <h1 style="font-size: 3rem; margin-bottom: 20px; font-weight: bold;">⚡ Potter Academy</h1>
+    <p style="font-size: 1.3rem; margin-bottom: 30px; opacity: 0.95;">Explora el mundo mágico de Harry Potter con acceso a libros y personajes</p>
+    
+    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <a href="/books" class="btn btn-light btn-lg" style="padding: 12px 30px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+            📚 Ver Libros
+        </a>
+        <a href="/characters" class="btn btn-light btn-lg" style="padding: 12px 30px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+            🧙 Ver Personajes
+        </a>
+    </div>
+</div>
 
-Welcome to your new app.
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100" style="border-left: 4px solid #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #667eea;">📖 Libros</h5>
+                    <p class="card-text">Descubre todos los libros de la saga Harry Potter. Información completa sobre autores, páginas, fechas de lanzamiento y más.</p>
+                    <a href="/books" class="btn btn-sm btn-primary">Explorar →</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100" style="border-left: 4px solid #764ba2; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #764ba2;">🧙 Personajes</h5>
+                    <p class="card-text">Conoce a todos los personajes del universo de Harry Potter. Encuentra información sobre sus casas, patronus, wands y mucho más.</p>
+                    <a href="/characters" class="btn btn-sm btn-primary">Explorar →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert" style="border-radius: 8px;">
+                <strong>✨ Bienvenido a Potter Academy</strong>
+                <p style="margin-top: 10px; margin-bottom: 0;">Una plataforma desarrollada con .NET 10, Blazor Server y datos de la API de PotterDB. 
+                Explora el mundo mágico de forma interactiva y aprende sobre CI/CD.</p>
+            </div>
+        </div>
+    </div>
+</div>

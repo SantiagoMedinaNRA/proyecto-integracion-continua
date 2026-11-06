@@ -2,38 +2,86 @@
 @inject IApiClient ApiClient
 @using Shared.Models
 
-<div class="container mt-5">
-    <h1>Harry Potter Books</h1>
+<PageTitle>Libros - Potter Academy</PageTitle>
 
-    @if (books == null)
-    {
-        <p class="alert alert-info">Loading books...</p>
-    }
-    else if (books.Count == 0)
-    {
-        <p class="alert alert-warning">No books found.</p>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (var book in books)
-            {
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">@book.Title</h5>
-                            <p class="card-text">
-                                <strong>Author:</strong> @book.Author<br>
-                                <strong>Pages:</strong> @book.Pages<br>
-                                <strong>Release Date:</strong> @book.ReleaseDate.ToShortDateString()
-                            </p>
-                            <p class="card-text text-muted small">@book.Description</p>
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+    <div class="container">
+        <div class="mb-5">
+            <h1 style="font-size: 2.5rem; font-weight: bold; color: #333; margin-bottom: 10px;">📚 Libros de Harry Potter</h1>
+            <p style="font-size: 1.1rem; color: #666;">Descubre todos los libros de la saga de J.K. Rowling</p>
+        </div>
+
+        @if (books == null)
+        {
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Cargando libros...</p>
+            </div>
+        }
+        else if (books.Count == 0)
+        {
+            <div class="alert alert-warning" role="alert">
+                <strong>⚠️ No se encontraron libros</strong>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var book in books)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;"
+                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)'"
+                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'">
+                            
+                            @if (!string.IsNullOrEmpty(book.Cover))
+                            {
+                                <img src="@book.Cover" alt="@book.Title" class="card-img-top" style="height: 250px; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div style="height: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                    📖
+                                </div>
+                            }
+                            
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" style="font-weight: bold; color: #333; margin-bottom: 8px;">@book.Title</h5>
+                                <p class="card-text" style="color: #667eea; font-weight: 600; margin-bottom: 10px;">
+                                    <small>@book.Author</small>
+                                </p>
+                                
+                                <div style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+                                    <p style="margin: 5px 0;"><strong>📄 Páginas:</strong> @book.Pages</p>
+                                    <p style="margin: 5px 0;"><strong>📅 Lanzamiento:</strong> @book.ReleaseDate.ToShortDateString()</p>
+                                </div>
+                                
+                                <p class="card-text" style="color: #555; font-size: 0.95rem; flex-grow: 1; margin-bottom: 15px;">
+                                    @if (book.Description.Length > 100)
+                                    {
+                                        <small>@book.Description.Substring(0, 100)...</small>
+                                    }
+                                    else
+                                    {
+                                        <small>@book.Description</small>
+                                    }
+                                </p>
+                                
+                                @if (!string.IsNullOrEmpty(book.Wiki))
+                                {
+                                    <a href="@book.Wiki" target="_blank" class="btn btn-sm btn-outline-primary" style="margin-top: auto;">
+                                        Más información →
+                                    </a>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
+                }
+            </div>
+        }
+    </div>
 </div>
 
 @code {

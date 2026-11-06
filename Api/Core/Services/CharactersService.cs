@@ -13,28 +13,29 @@ public class CharactersService : ICharactersService
         this.logger = logger;
     }
 
-    public async ValueTask<List<CharacterDto>> GetCharactersAsync()
+    public async ValueTask<List<CharacterDto>> GetCharactersAsync(int pageNumber = 1, int pageSize = 20)
     {
         try
         {
-            var cachedCharacters = await cacheBroker.GetAsync<List<CharacterDto>>(CacheKeys.AllCharacters);
+            string cacheKey = string.Format(CacheKeys.CharacterPage, pageNumber, pageSize);
+            var cachedCharacters = await cacheBroker.GetAsync<List<CharacterDto>>(cacheKey);
 
             if (cachedCharacters != null)
             {
-                logger.LogInformation("Returning cached characters");
+                logger.LogInformation("Returning cached characters for page {PageNumber}", pageNumber);
                 return cachedCharacters;
             }
 
-            logger.LogInformation("Fetching characters from PotterDB");
-            List<CharacterDto> characters = await potterDbBroker.GetCharactersAsync();
+            logger.LogInformation("Fetching characters from PotterDB (page {PageNumber}, size {PageSize})", pageNumber, pageSize);
+            List<CharacterDto> characters = await potterDbBroker.GetCharactersAsync(pageNumber, pageSize);
 
-            await cacheBroker.SetAsync(CacheKeys.AllCharacters, characters);
+            await cacheBroker.SetAsync(cacheKey, characters);
 
             return characters;
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Error retrieving characters");
+            logger.LogError(exception, "Error retrieving characters for page {PageNumber}", pageNumber);
             throw;
         }
     }

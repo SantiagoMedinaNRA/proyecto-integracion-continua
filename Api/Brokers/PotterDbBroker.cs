@@ -2,87 +2,87 @@ namespace Api.Brokers;
 
 public class PotterDbBroker : IPotterDbBroker
 {
-  private readonly HttpClient httpClient;
-  private readonly ILogger<PotterDbBroker> logger;
-  private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
+    private readonly HttpClient httpClient;
+    private readonly ILogger<PotterDbBroker> logger;
+    private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
-  public PotterDbBroker(HttpClient httpClient, ILogger<PotterDbBroker> logger)
-  {
-    this.httpClient = httpClient;
-    this.logger = logger;
-  }
-
-  public async ValueTask<List<BookDto>> GetBooksAsync()
-  {
-    try
+    public PotterDbBroker(HttpClient httpClient, ILogger<PotterDbBroker> logger)
     {
-      string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.BooksEndpoint}";
-      logger.LogInformation("Fetching books from {Url}", url);
-
-      var response = await httpClient.GetFromJsonAsync<PotterDbResponse<BookResponse>>(url, JsonOptions);
-      return response?.Data.Select(BookDto.FromResponse).ToList() ?? [];
+        this.httpClient = httpClient;
+        this.logger = logger;
     }
-    catch (Exception exception)
+
+    public async ValueTask<List<BookDto>> GetBooksAsync()
     {
-      logger.LogError(exception, "Error fetching books from PotterDB");
-      throw;
-    }
-  }
+        try
+        {
+            string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.BooksEndpoint}";
+            logger.LogInformation("Fetching books from {Url}", url);
 
-  public async ValueTask<BookDto> GetBookByIdAsync(string bookId)
-  {
-    try
+            var response = await httpClient.GetFromJsonAsync<PotterDbResponse<BookResponse>>(url, JsonOptions);
+            return response?.Data.Select(BookDto.FromResponse).ToList() ?? [];
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Error fetching books from PotterDB");
+            throw;
+        }
+    }
+
+    public async ValueTask<BookDto> GetBookByIdAsync(string bookId)
     {
-      string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.BooksEndpoint}/{bookId}";
-      logger.LogInformation("Fetching book {BookId} from {Url}", bookId, url);
+        try
+        {
+            string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.BooksEndpoint}/{bookId}";
+            logger.LogInformation("Fetching book {BookId} from {Url}", bookId, url);
 
-      var response = await httpClient.GetFromJsonAsync<PotterDbResponse<BookResponse>>(url, JsonOptions);
-      var book = response?.Data.FirstOrDefault()
-          ?? throw new InvalidOperationException($"Book {bookId} not found");
+            var response = await httpClient.GetFromJsonAsync<PotterDbResponse<BookResponse>>(url, JsonOptions);
+            var book = response?.Data.FirstOrDefault()
+                ?? throw new InvalidOperationException($"Book {bookId} not found");
 
-      return BookDto.FromResponse(book);
+            return BookDto.FromResponse(book);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Error fetching book {BookId} from PotterDB", bookId);
+            throw;
+        }
     }
-    catch (Exception exception)
+
+    public async ValueTask<List<CharacterDto>> GetCharactersAsync(int pageNumber = 1, int pageSize = 20)
     {
-      logger.LogError(exception, "Error fetching book {BookId} from PotterDB", bookId);
-      throw;
-    }
-  }
+        try
+        {
+            string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.CharactersEndpoint}?page[number]={pageNumber}&page[size]={pageSize}";
+            logger.LogInformation("Fetching characters from {Url} (page {PageNumber}, size {PageSize})", url, pageNumber, pageSize);
 
-  public async ValueTask<List<CharacterDto>> GetCharactersAsync()
-  {
-    try
+            var response = await httpClient.GetFromJsonAsync<PotterDbResponse<CharacterResponse>>(url, JsonOptions);
+            return response?.Data.Select(CharacterDto.FromResponse).ToList() ?? [];
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Error fetching characters from PotterDB (page {PageNumber})", pageNumber);
+            throw;
+        }
+    }
+
+    public async ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId)
     {
-      string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.CharactersEndpoint}";
-      logger.LogInformation("Fetching characters from {Url}", url);
+        try
+        {
+            string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.CharactersEndpoint}/{characterId}";
+            logger.LogInformation("Fetching character {CharacterId} from {Url}", characterId, url);
 
-      var response = await httpClient.GetFromJsonAsync<PotterDbResponse<CharacterResponse>>(url, JsonOptions);
-      return response?.Data.Select(CharacterDto.FromResponse).ToList() ?? [];
-    }
-    catch (Exception exception)
-    {
-      logger.LogError(exception, "Error fetching characters from PotterDB");
-      throw;
-    }
-  }
+            var response = await httpClient.GetFromJsonAsync<PotterDbResponse<CharacterResponse>>(url, JsonOptions);
+            var character = response?.Data.FirstOrDefault()
+                ?? throw new InvalidOperationException($"Character {characterId} not found");
 
-  public async ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId)
-  {
-    try
-    {
-      string url = $"{PotterDbConstants.BaseUrl}{PotterDbConstants.CharactersEndpoint}/{characterId}";
-      logger.LogInformation("Fetching character {CharacterId} from {Url}", characterId, url);
-
-      var response = await httpClient.GetFromJsonAsync<PotterDbResponse<CharacterResponse>>(url, JsonOptions);
-      var character = response?.Data.FirstOrDefault()
-          ?? throw new InvalidOperationException($"Character {characterId} not found");
-
-      return CharacterDto.FromResponse(character);
+            return CharacterDto.FromResponse(character);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Error fetching character {CharacterId} from PotterDB", characterId);
+            throw;
+        }
     }
-    catch (Exception exception)
-    {
-      logger.LogError(exception, "Error fetching character {CharacterId} from PotterDB", characterId);
-      throw;
-    }
-  }
 }

@@ -5,6 +5,7 @@ public static class CacheKeys
     public const string AllBooks = "potter:books:all";
     public const string BookDetail = "potter:book:{0}";
     public const string AllCharacters = "potter:characters:all";
+    public const string CharacterPage = "potter:characters:page:{0}:size:{1}";
     public const string CharacterDetail = "potter:character:{0}";
     public const string AllSpells = "potter:spells:all";
     public const string AllPotions = "potter:potions:all";
