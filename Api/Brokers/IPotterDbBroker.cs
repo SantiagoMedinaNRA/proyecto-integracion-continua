@@ -2,8 +2,8 @@ namespace Api.Brokers;
 
 public interface IPotterDbBroker
 {
-    ValueTask<List<BookResponse>> GetBooksAsync();
-    ValueTask<BookResponse> GetBookByIdAsync(string bookId);
-    ValueTask<List<CharacterResponse>> GetCharactersAsync();
-    ValueTask<CharacterResponse> GetCharacterByIdAsync(string characterId);
+    ValueTask<List<BookDto>> GetBooksAsync();
+    ValueTask<BookDto> GetBookByIdAsync(string bookId);
+    ValueTask<List<CharacterDto>> GetCharactersAsync();
+    ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId);
 }

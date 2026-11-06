@@ -2,10 +2,10 @@ namespace Web.Services;
 
 public interface IApiClient
 {
-    ValueTask<List<BookResponse>> GetBooksAsync();
-    ValueTask<BookResponse> GetBookByIdAsync(string bookId);
-    ValueTask<List<CharacterResponse>> GetCharactersAsync();
-    ValueTask<CharacterResponse> GetCharacterByIdAsync(string characterId);
+    ValueTask<List<BookDto>> GetBooksAsync();
+    ValueTask<BookDto> GetBookByIdAsync(string bookId);
+    ValueTask<List<CharacterDto>> GetCharactersAsync();
+    ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId);
 }
 
 public class ApiClient : IApiClient
@@ -21,13 +21,13 @@ public class ApiClient : IApiClient
         this.apiSettings = options.Value;
     }
 
-    public async ValueTask<List<BookResponse>> GetBooksAsync()
+    public async ValueTask<List<BookDto>> GetBooksAsync()
     {
         try
         {
             string url = $"{apiSettings.BaseUrl}/api/books";
             logger.LogInformation("Fetching books from {Url}", url);
-            var response = await httpClient.GetFromJsonAsync<List<BookResponse>>(url);
+            var response = await httpClient.GetFromJsonAsync<List<BookDto>>(url);
             return response ?? [];
         }
         catch (Exception exception)
@@ -37,13 +37,13 @@ public class ApiClient : IApiClient
         }
     }
 
-    public async ValueTask<BookResponse> GetBookByIdAsync(string bookId)
+    public async ValueTask<BookDto> GetBookByIdAsync(string bookId)
     {
         try
         {
             string url = $"{apiSettings.BaseUrl}/api/books/{bookId}";
             logger.LogInformation("Fetching book {BookId} from {Url}", bookId, url);
-            var response = await httpClient.GetFromJsonAsync<BookResponse>(url);
+            var response = await httpClient.GetFromJsonAsync<BookDto>(url);
             return response!;
         }
         catch (Exception exception)
@@ -53,13 +53,13 @@ public class ApiClient : IApiClient
         }
     }
 
-    public async ValueTask<List<CharacterResponse>> GetCharactersAsync()
+    public async ValueTask<List<CharacterDto>> GetCharactersAsync()
     {
         try
         {
             string url = $"{apiSettings.BaseUrl}/api/characters";
             logger.LogInformation("Fetching characters from {Url}", url);
-            var response = await httpClient.GetFromJsonAsync<List<CharacterResponse>>(url);
+            var response = await httpClient.GetFromJsonAsync<List<CharacterDto>>(url);
             return response ?? [];
         }
         catch (Exception exception)
@@ -69,13 +69,13 @@ public class ApiClient : IApiClient
         }
     }
 
-    public async ValueTask<CharacterResponse> GetCharacterByIdAsync(string characterId)
+    public async ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId)
     {
         try
         {
             string url = $"{apiSettings.BaseUrl}/api/characters/{characterId}";
             logger.LogInformation("Fetching character {CharacterId} from {Url}", characterId, url);
-            var response = await httpClient.GetFromJsonAsync<CharacterResponse>(url);
+            var response = await httpClient.GetFromJsonAsync<CharacterDto>(url);
             return response!;
         }
         catch (Exception exception)

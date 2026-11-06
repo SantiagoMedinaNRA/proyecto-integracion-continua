@@ -20,8 +20,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.UseDeveloperExceptionPage();
+  app.MapOpenApi();
+  app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -29,4 +29,4 @@ app.UseCors();
 app.UseRouting();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

@@ -13,11 +13,11 @@ public class BooksService : IBooksService
         this.logger = logger;
     }
 
-    public async ValueTask<List<BookResponse>> GetBooksAsync()
+    public async ValueTask<List<BookDto>> GetBooksAsync()
     {
         try
         {
-            var cachedBooks = await cacheBroker.GetAsync<List<BookResponse>>(CacheKeys.AllBooks);
+            var cachedBooks = await cacheBroker.GetAsync<List<BookDto>>(CacheKeys.AllBooks);
 
             if (cachedBooks != null)
             {
@@ -26,7 +26,7 @@ public class BooksService : IBooksService
             }
 
             logger.LogInformation("Fetching books from PotterDB");
-            List<BookResponse> books = await potterDbBroker.GetBooksAsync();
+            List<BookDto> books = await potterDbBroker.GetBooksAsync();
 
             await cacheBroker.SetAsync(CacheKeys.AllBooks, books);
 
@@ -39,12 +39,12 @@ public class BooksService : IBooksService
         }
     }
 
-    public async ValueTask<BookResponse> GetBookByIdAsync(string bookId)
+    public async ValueTask<BookDto> GetBookByIdAsync(string bookId)
     {
         try
         {
             string cacheKey = string.Format(CacheKeys.BookDetail, bookId);
-            var cachedBook = await cacheBroker.GetAsync<BookResponse>(cacheKey);
+            var cachedBook = await cacheBroker.GetAsync<BookDto>(cacheKey);
 
             if (cachedBook != null)
             {
@@ -53,7 +53,7 @@ public class BooksService : IBooksService
             }
 
             logger.LogInformation("Fetching book {BookId} from PotterDB", bookId);
-            BookResponse book = await potterDbBroker.GetBookByIdAsync(bookId);
+            BookDto book = await potterDbBroker.GetBookByIdAsync(bookId);
 
             await cacheBroker.SetAsync(cacheKey, book);
 

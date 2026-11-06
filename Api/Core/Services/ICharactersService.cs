@@ -2,6 +2,6 @@ namespace Api.Core.Services;
 
 public interface ICharactersService
 {
-    ValueTask<List<CharacterResponse>> GetCharactersAsync();
-    ValueTask<CharacterResponse> GetCharacterByIdAsync(string characterId);
+    ValueTask<List<CharacterDto>> GetCharactersAsync();
+    ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId);
 }

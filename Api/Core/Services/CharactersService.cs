@@ -13,11 +13,11 @@ public class CharactersService : ICharactersService
         this.logger = logger;
     }
 
-    public async ValueTask<List<CharacterResponse>> GetCharactersAsync()
+    public async ValueTask<List<CharacterDto>> GetCharactersAsync()
     {
         try
         {
-            var cachedCharacters = await cacheBroker.GetAsync<List<CharacterResponse>>(CacheKeys.AllCharacters);
+            var cachedCharacters = await cacheBroker.GetAsync<List<CharacterDto>>(CacheKeys.AllCharacters);
 
             if (cachedCharacters != null)
             {
@@ -26,7 +26,7 @@ public class CharactersService : ICharactersService
             }
 
             logger.LogInformation("Fetching characters from PotterDB");
-            List<CharacterResponse> characters = await potterDbBroker.GetCharactersAsync();
+            List<CharacterDto> characters = await potterDbBroker.GetCharactersAsync();
 
             await cacheBroker.SetAsync(CacheKeys.AllCharacters, characters);
 
@@ -39,12 +39,12 @@ public class CharactersService : ICharactersService
         }
     }
 
-    public async ValueTask<CharacterResponse> GetCharacterByIdAsync(string characterId)
+    public async ValueTask<CharacterDto> GetCharacterByIdAsync(string characterId)
     {
         try
         {
             string cacheKey = string.Format(CacheKeys.CharacterDetail, characterId);
-            var cachedCharacter = await cacheBroker.GetAsync<CharacterResponse>(cacheKey);
+            var cachedCharacter = await cacheBroker.GetAsync<CharacterDto>(cacheKey);
 
             if (cachedCharacter != null)
             {
@@ -53,7 +53,7 @@ public class CharactersService : ICharactersService
             }
 
             logger.LogInformation("Fetching character {CharacterId} from PotterDB", characterId);
-            CharacterResponse character = await potterDbBroker.GetCharacterByIdAsync(characterId);
+            CharacterDto character = await potterDbBroker.GetCharacterByIdAsync(characterId);
 
             await cacheBroker.SetAsync(cacheKey, character);
 

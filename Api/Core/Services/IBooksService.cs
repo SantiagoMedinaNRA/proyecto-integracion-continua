@@ -2,6 +2,6 @@ namespace Api.Core.Services;
 
 public interface IBooksService
 {
-    ValueTask<List<BookResponse>> GetBooksAsync();
-    ValueTask<BookResponse> GetBookByIdAsync(string bookId);
+    ValueTask<List<BookDto>> GetBooksAsync();
+    ValueTask<BookDto> GetBookByIdAsync(string bookId);
 }

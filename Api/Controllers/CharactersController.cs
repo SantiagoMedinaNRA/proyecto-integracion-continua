@@ -16,12 +16,12 @@ public class CharactersController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<CharacterResponse>>> GetCharacters()
+    public async Task<ActionResult<IEnumerable<CharacterDto>>> GetCharacters()
     {
         try
         {
             logger.LogInformation("GET /api/characters");
-            List<CharacterResponse> characters = await charactersService.GetCharactersAsync();
+            List<CharacterDto> characters = await charactersService.GetCharactersAsync();
             return Ok(characters);
         }
         catch (Exception exception)
@@ -34,12 +34,12 @@ public class CharactersController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<CharacterResponse>> GetCharacterById(string id)
+    public async Task<ActionResult<CharacterDto>> GetCharacterById(string id)
     {
         try
         {
             logger.LogInformation("GET /api/characters/{Id}", id);
-            CharacterResponse character = await charactersService.GetCharacterByIdAsync(id);
+            CharacterDto character = await charactersService.GetCharacterByIdAsync(id);
             return Ok(character);
         }
         catch (Exception exception)

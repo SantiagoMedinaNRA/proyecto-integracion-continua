@@ -16,12 +16,12 @@ public class BooksController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<BookResponse>>> GetBooks()
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
     {
         try
         {
             logger.LogInformation("GET /api/books");
-            List<BookResponse> books = await booksService.GetBooksAsync();
+            List<BookDto> books = await booksService.GetBooksAsync();
             return Ok(books);
         }
         catch (Exception exception)
@@ -35,12 +35,12 @@ public class BooksController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<BookResponse>> GetBookById(string id)
+    public async Task<ActionResult<BookDto>> GetBookById(string id)
     {
         try
         {
             logger.LogInformation("GET /api/books/{Id}", id);
-            BookResponse book = await booksService.GetBookByIdAsync(id);
+            BookDto book = await booksService.GetBookByIdAsync(id);
             return Ok(book);
         }
         catch (Exception exception)
