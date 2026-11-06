@@ -43,7 +43,7 @@
     {
         try
         {
-            books = await Http.GetFromJsonAsync<List<BookResponse>>("https://localhost:5000/api/books");
+            books = await Http.GetFromJsonAsync<List<BookResponse>>("https://localhost:6000/api/books");
         }
         catch (Exception ex)
         {

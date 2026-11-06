@@ -51,7 +51,7 @@
     {
         try
         {
-            characters = await Http.GetFromJsonAsync<List<CharacterResponse>>("https://localhost:5000/api/characters");
+            characters = await Http.GetFromJsonAsync<List<CharacterResponse>>("https://localhost:6000/api/characters");
         }
         catch (Exception ex)
         {
