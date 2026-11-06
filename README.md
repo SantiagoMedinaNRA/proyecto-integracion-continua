@@ -1,11 +1,10 @@
-# Potter CI Academy Platform
+# Proyecto Integracion Continua
 
 Plataforma web interactiva basada en Harry Potter que demuestra integración continua, arquitectura desacoplada y The Standard como metodología de desarrollo.
 
 ## Equipo
 
-- [Nombre 1]
-- [Nombre 2]
+- Santiago Medina Peláez
 
 ## 📋 Descripción
 
@@ -20,8 +19,6 @@ Consumidor interactivo de la API pública [PotterDB](https://docs.potterdb.com/a
 | Backend | ASP.NET Core Web API |
 | Testing | xUnit 3, NSubstitute, Shouldly |
 | Logging | Serilog |
-| Resilience | Microsoft.Extensions.Resilience |
-| Serialization | System.Text.Json |
 
 ## 📁 Estructura del Proyecto
 
@@ -34,7 +31,7 @@ proyecto-integracion-continua/
 └── .github/workflows/      (CI/CD - Entrega 1)
 ```
 
-## 🚀 Cómo ejecutar (Vainilla)
+## 🚀 Cómo ejecutar
 
 ### Requisitos
 
@@ -78,15 +75,6 @@ dotnet run --urls "https://localhost:5001;http://localhost:5001"
 
 Acceder a: `https://localhost:5001`
 
-## 🐳 Cómo ejecutar (Docker - Entrega 1)
-
-```bash
-docker compose up --build
-```
-
-Acceder a: `http://localhost:3000` (Blazor)
-API en: `http://api:5000` (dentro de la red Docker)
-
 ## 📡 Endpoints API
 
 | Endpoint | Método | Descripción |
@@ -108,21 +96,3 @@ API en: `http://api:5000` (dentro de la red Docker)
 - **HousesPage** - Información de casas
 - **CharacterCard** - Componente reutilizable
 - **SearchBar** - Búsqueda en tiempo real
-
-## ✅ Estado del Proyecto
-
-- [ ] Vainilla funcional
-- [ ] Docker (Entrega 1 - Semana 3)
-- [ ] Jenkins (Entrega 2 - Semana 5)
-- [ ] Travis CI + Codeship (Entrega 3 - Semana 7)
-
-## 📚 Documentación Adicional
-
-- [Spec General](.kiro/specs/spec-general.md)
-- Documentación de entregas: `documentation/` (fuera del repo)
-
-## 🔗 Referencias
-
-- [PotterDB API](https://docs.potterdb.com/apis/rest)
-- [The Standard](https://github.com/hassanhabib/The-Standard)
-- [Blazor Documentation](https://learn.microsoft.com/en-us/aspnet/core/blazor)
