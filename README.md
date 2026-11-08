@@ -1,6 +1,6 @@
-# Proyecto Integracion Continua
+# Proyecto Integración Continua
 
-Plataforma web interactiva basada en Harry Potter que demuestra integración continua, arquitectura desacoplada y The Standard como metodología de desarrollo.
+Plataforma web interactiva basada en Harry Potter que demuestra integración continua, arquitectura desacoplada y donde se desarrollarán las actividades para entregar.
 
 ## Equipo
 
@@ -17,8 +17,7 @@ Consumidor interactivo de la API pública [PotterDB](https://docs.potterdb.com/a
 | Runtime | .NET 10 |
 | Frontend | Blazor Server |
 | Backend | ASP.NET Core Web API |
-| Testing | xUnit 3, NSubstitute, Shouldly |
-| Logging | Serilog |
+| Cache | Valkey 7.0 |
 
 ## 📁 Estructura del Proyecto
 
@@ -28,71 +27,55 @@ proyecto-integracion-continua/
 ├── Web/                    (Blazor Server)
 ├── Shared/                 (DTOs, Models, Constants)
 ├── Tests/                  (Unit Tests)
-└── .github/workflows/      (CI/CD - Entrega 1)
+├── docker-compose.yml      (Orquestación Docker)
+├── .env.example            (Variables de entorno)
+└── .github/workflows/      (CI/CD)
 ```
 
-## 🚀 Cómo ejecutar
+## 🚀 Cómo ejecutar con Docker
 
 ### Requisitos
 
-- .NET 10 SDK
-- PowerShell o Terminal compatible
+- Docker Desktop o Docker Engine
+- Docker Compose 2.x
+- Git
 
-### Instalar dependencias
+### Pasos para ejecutar
 
+**1. Clonar el repositorio**
 ```powershell
+git clone https://github.com/SantiagoMedinaNRA/proyecto-integracion-continua.git
 cd proyecto-integracion-continua
-dotnet restore
 ```
 
-### Compilar
-
+**2. Construir las imágenes Docker**
 ```powershell
-dotnet build
+docker build -f Api/Dockerfile -t potter-api:1.0 .
+docker build -f Web/Dockerfile -t potter-web:1.0 .
 ```
 
-### Ejecutar tests
-
+**3. Levantar los contenedores**
 ```powershell
-dotnet test
+docker compose up -d
 ```
 
-### Ejecutar API
+El comando levanta automáticamente los tres servicios: `potter-web`, `potter-api` y `potter-valkey`.
 
+**4. Verificar que los servicios están corriendo**
 ```powershell
-cd Api
-dotnet run --urls "https://localhost:5000;http://localhost:5000"
+docker ps
 ```
 
-La API estará disponible en: `https://localhost:5000`
+Los tres contenedores (`potter-web`, `potter-api`, `potter-valkey`) deben estar en status `Up` con healthcheck `(healthy)`.
 
-### Ejecutar Blazor (en otra terminal)
+**5. Acceder a la aplicación**
+- Frontend: http://localhost:5001
 
+**6. Detener los contenedores**
 ```powershell
-cd Web
-dotnet run --urls "https://localhost:5001;http://localhost:5001"
+docker compose down
 ```
 
-Acceder a: `https://localhost:5001`
+### Variables de entorno
 
-## 📡 Endpoints API
-
-| Endpoint | Método | Descripción |
-|----------|--------|-------------|
-| `/api/books` | GET | Listar todos los libros |
-| `/api/books/{id}` | GET | Detalle de un libro |
-| `/api/characters` | GET | Listar personajes |
-| `/api/characters/{id}` | GET | Detalle de un personaje |
-| `/api/spells` | GET | Listar hechizos |
-| `/api/potions` | GET | Listar pociones |
-| `/api/houses` | GET | Listar casas |
-| `/api/cache/status` | GET | Estado del caché |
-
-## 🧩 Componentes Blazor Principales
-
-- **BooksPage** - Listado interactivo de libros
-- **CharactersPage** - Catálogo de personajes
-- **SpellsPage** - Búsqueda de hechizos
-- **HousesPage** - Información de casas
-- **CharacterCard** - Componente reutilizable
-- **SearchBar** - Búsqueda en tiempo real
+Ver `.env.example` para la configuración. El archivo `.env` se crea automáticamente desde el ejemplo.
