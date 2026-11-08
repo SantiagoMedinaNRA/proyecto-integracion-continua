@@ -1,0 +1,94 @@
+@page "/spells"
+@inject IApiClient ApiClient
+@using Shared.Models
+
+<PageTitle>Hechizos - Potter Academy</PageTitle>
+
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); min-height: 100vh;">
+    <div class="container">
+        <div class="mb-5">
+            <h1 style="font-size: 2.5rem; font-weight: bold; color: #fff; margin-bottom: 10px;">✨ Hechizos Mágicos</h1>
+            <p style="font-size: 1.1rem; color: rgba(255,255,255,0.9);">Descubre todos los hechizos del Mundo Mágico</p>
+        </div>
+
+        @if (spells == null)
+        {
+            <div class="text-center py-5">
+                <div class="spinner-border text-light" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-light">Cargando hechizos...</p>
+            </div>
+        }
+        else if (spells.Count == 0)
+        {
+            <div class="alert alert-warning" role="alert">
+                <strong>⚠️ No se encontraron hechizos</strong>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var spell in spells)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.3s ease, box-shadow 0.3s ease; background: white;"
+                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
+                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.2)'">
+                            
+                            <div style="height: 150px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                ⚡
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" style="font-weight: bold; color: #333; margin-bottom: 8px;">@spell.Name</h5>
+                                
+                                @if (!string.IsNullOrEmpty(spell.Incantation))
+                                {
+                                    <p class="card-text" style="color: #f5576c; font-weight: 600; font-style: italic; margin-bottom: 10px;">
+                                        <small>«@spell.Incantation»</small>
+                                    </p>
+                                }
+                                
+                                <div style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+                                    @if (!string.IsNullOrEmpty(spell.Category))
+                                    {
+                                        <p style="margin: 5px 0;"><strong>📂 Categoría:</strong> @spell.Category</p>
+                                    }
+                                    @if (!string.IsNullOrEmpty(spell.Effect))
+                                    {
+                                        <p style="margin: 5px 0;"><strong>💫 Efecto:</strong> @spell.Effect</p>
+                                    }
+                                </div>
+                                
+                                @if (!string.IsNullOrEmpty(spell.Wiki))
+                                {
+                                    <a href="@spell.Wiki" target="_blank" class="btn btn-sm btn-outline-danger" style="margin-top: auto;">
+                                        Más información →
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<SpellDto>? spells;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            spells = await ApiClient.GetSpellsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading spells: {ex.Message}");
+            spells = [];
+        }
+    }
+}

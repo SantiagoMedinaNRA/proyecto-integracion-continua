@@ -4,36 +4,75 @@
 
 <div class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 20px; text-align: center; border-radius: 10px; margin-bottom: 40px;">
     <h1 style="font-size: 3rem; margin-bottom: 20px; font-weight: bold;">⚡ Potter Academy</h1>
-    <p style="font-size: 1.3rem; margin-bottom: 30px; opacity: 0.95;">Explora el mundo mágico de Harry Potter con acceso a libros y personajes</p>
+    <p style="font-size: 1.3rem; margin-bottom: 30px; opacity: 0.95;">Explora el mundo mágico de Harry Potter: libros, personajes, hechizos, pociones y películas</p>
     
     <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
         <a href="/books" class="btn btn-light btn-lg" style="padding: 12px 30px; font-weight: bold; text-decoration: none; border-radius: 5px;">
-            📚 Ver Libros
+            📚 Libros
         </a>
         <a href="/characters" class="btn btn-light btn-lg" style="padding: 12px 30px; font-weight: bold; text-decoration: none; border-radius: 5px;">
-            🧙 Ver Personajes
+            🧙 Personajes
+        </a>
+        <a href="/spells" class="btn btn-light btn-lg" style="padding: 12px 30px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+            ✨ Hechizos
+        </a>
+        <a href="/potions" class="btn btn-light btn-lg" style="padding: 12px 30px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+            🧪 Pociones
+        </a>
+        <a href="/movies" class="btn btn-light btn-lg" style="padding: 12px 30px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+            🎬 Películas
         </a>
     </div>
 </div>
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100" style="border-left: 4px solid #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 <div class="card-body">
                     <h5 class="card-title" style="color: #667eea;">📖 Libros</h5>
-                    <p class="card-text">Descubre todos los libros de la saga Harry Potter. Información completa sobre autores, páginas, fechas de lanzamiento y más.</p>
+                    <p class="card-text">Descubre todos los libros de la saga Harry Potter. Información sobre autores, páginas, fechas de lanzamiento y resúmenes.</p>
                     <a href="/books" class="btn btn-sm btn-primary">Explorar →</a>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100" style="border-left: 4px solid #764ba2; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 <div class="card-body">
                     <h5 class="card-title" style="color: #764ba2;">🧙 Personajes</h5>
-                    <p class="card-text">Conoce a todos los personajes del universo de Harry Potter. Encuentra información sobre sus casas, patronus, wands y mucho más.</p>
+                    <p class="card-text">Conoce a todos los personajes del universo. Información sobre sus casas, patronus, wands, sangre y más atributos.</p>
                     <a href="/characters" class="btn btn-sm btn-primary">Explorar →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100" style="border-left: 4px solid #f5576c; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #f5576c;">✨ Hechizos</h5>
+                    <p class="card-text">Explora todos los hechizos mágicos. Descubre incantaciones, categorías, efectos y movimientos de varita.</p>
+                    <a href="/spells" class="btn btn-sm btn-outline-danger">Explorar →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100" style="border-left: 4px solid #00f2fe; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #00f2fe;">🧪 Pociones</h5>
+                    <p class="card-text">Descubre las pociones mágicas del mundo mágico. Información sobre efectos, dificultad, ingredientes y tiempo de preparación.</p>
+                    <a href="/potions" class="btn btn-sm btn-outline-info">Explorar →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100" style="border-left: 4px solid #fee140; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #fa709a;">🎬 Películas</h5>
+                    <p class="card-text">Revisa todas las películas de la saga cinematográfica. Directores, productores, guionistas y datos de estrenos.</p>
+                    <a href="/movies" class="btn btn-sm btn-outline-warning">Explorar →</a>
                 </div>
             </div>
         </div>
@@ -44,7 +83,7 @@
             <div class="alert alert-info" role="alert" style="border-radius: 8px;">
                 <strong>✨ Bienvenido a Potter Academy</strong>
                 <p style="margin-top: 10px; margin-bottom: 0;">Una plataforma desarrollada con .NET 10, Blazor Server y datos de la API de PotterDB. 
-                Explora el mundo mágico de forma interactiva y aprende sobre CI/CD.</p>
+                Explora el mundo mágico de forma interactiva y aprende sobre integración continua con Docker, Jenkins y GitHub Actions.</p>
             </div>
         </div>
     </div>

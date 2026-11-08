@@ -26,6 +26,9 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 builder.Services.AddScoped<ICacheBroker, CacheBroker>();
 builder.Services.AddScoped<IBooksService, BooksService>();
 builder.Services.AddScoped<ICharactersService, CharactersService>();
+builder.Services.AddScoped<ISpellsService, SpellsService>();
+builder.Services.AddScoped<IPotionsService, PotionsService>();
+builder.Services.AddScoped<IMoviesService, MoviesService>();
 
 var app = builder.Build();
 
