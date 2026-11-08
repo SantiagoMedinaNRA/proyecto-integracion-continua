@@ -8,7 +8,18 @@ builder.Host.UseSerilog((context, loggerConfig) =>
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.Services.AddMemoryCache();
+
+// Add distributed Redis cache (Valkey compatible)
+var valkeyConnection = builder.Configuration["ValkeyConnection"] ?? "localhost:6379";
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = valkeyConnection;
+});
+
+// Add health checks
+builder.Services.AddHealthChecks()
+    .AddRedis(valkeyConnection, name: "valkey", tags: new[] { "ready" });
+
 builder.Services.AddHttpClient<IPotterDbBroker, PotterDbBroker>();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
@@ -24,9 +35,15 @@ if (app.Environment.IsDevelopment())
   app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
 app.UseCors();
-app.UseRouting();
+
+// Map health check endpoint BEFORE UseRouting
+app.MapGet("/health", async (context) =>
+{
+    context.Response.ContentType = "text/plain";
+    await context.Response.WriteAsync("Healthy");
+});
+
 app.MapControllers();
 
 await app.RunAsync();

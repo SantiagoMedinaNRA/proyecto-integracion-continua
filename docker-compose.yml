@@ -1,0 +1,70 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    container_name: ${WEB_SERVICE_NAME}
+    ports:
+      - "${WEB_PORT}:8000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=http://+:8000
+      - ApiSettings__BaseUrl=http://${API_SERVICE_NAME}:8000
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      - ${COMPOSE_NETWORK}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  api:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    container_name: ${API_SERVICE_NAME}
+    ports:
+      - "${API_PORT}:8000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${API_ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=http://+:8000
+      - ValkeyConnection=${VALKEY_SERVICE_NAME}:${VALKEY_PORT}
+      - PotterDbBaseUrl=${POTTER_DB_BASE_URL}
+    depends_on:
+      valkey:
+        condition: service_started
+    networks:
+      - ${COMPOSE_NETWORK}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  valkey:
+    image: valkey/valkey:latest
+    container_name: ${VALKEY_SERVICE_NAME}
+    ports:
+      - "${VALKEY_PORT}:6379"
+    command: valkey-server --appendonly yes --appendfsync everysec
+    volumes:
+      - valkey-data:/data
+    networks:
+      - ${COMPOSE_NETWORK}
+    restart: unless-stopped
+
+volumes:
+  valkey-data:
+    driver: local
+
+networks:
+  potter-network:
+    name: ${COMPOSE_NETWORK}
+    driver: bridge

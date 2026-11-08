@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 builder.Services.AddHttpClient<IApiClient, ApiClient>();
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -22,6 +24,7 @@ app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
+app.MapHealthChecks("/health");
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

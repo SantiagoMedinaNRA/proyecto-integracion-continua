@@ -1,0 +1,15 @@
+bin/
+obj/
+.vs
+.vscode
+*.user
+*.suo
+*.md
+Dockerfile
+.dockerignore
+*.log
+.DS_Store
+.git
+.gitignore
+.editorconfig
+wwwroot/lib/

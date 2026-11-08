@@ -1,51 +1,70 @@
 namespace Api.Brokers;
 
+using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
+
 public class CacheBroker : ICacheBroker
 {
-    private readonly IMemoryCache memoryCache;
+    private readonly IDistributedCache distributedCache;
     private readonly ILogger<CacheBroker> logger;
 
-    public CacheBroker(IMemoryCache memoryCache, ILogger<CacheBroker> logger)
+    public CacheBroker(IDistributedCache distributedCache, ILogger<CacheBroker> logger)
     {
-        this.memoryCache = memoryCache;
+        this.distributedCache = distributedCache;
         this.logger = logger;
     }
 
-    public ValueTask<T?> GetAsync<T>(string key) where T : class
+    public async ValueTask<T?> GetAsync<T>(string key) where T : class
     {
-        if (memoryCache.TryGetValue(key, out T? value))
+        try
         {
-            logger.LogInformation("Cache hit for key {Key}", key);
-            return new ValueTask<T?>(value);
-        }
+            var json = await distributedCache.GetStringAsync(key);
+            
+            if (!string.IsNullOrEmpty(json))
+            {
+                logger.LogInformation("[CACHE HIT] Retrieved '{Key}' from Valkey", key);
+                return JsonSerializer.Deserialize<T>(json);
+            }
 
-        logger.LogInformation("Cache miss for key {Key}", key);
-        return new ValueTask<T?>((T?)null);
+            logger.LogInformation("[CACHE MISS] '{Key}' not found in Valkey", key);
+            return null;
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "[CACHE ERROR] Failed to get '{Key}' from Valkey", key);
+            return null;
+        }
     }
 
-    public ValueTask SetAsync<T>(string key, T value, TimeSpan? expiration = null) where T : class
+    public async ValueTask SetAsync<T>(string key, T value, TimeSpan? expiration = null) where T : class
     {
-        var cacheOptions = new MemoryCacheEntryOptions();
-
-        if (expiration.HasValue)
+        try
         {
-            cacheOptions.AbsoluteExpirationRelativeToNow = expiration;
+            var json = JsonSerializer.Serialize(value);
+            var options = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = expiration ?? TimeSpan.FromHours(1)
+            };
+
+            await distributedCache.SetStringAsync(key, json, options);
+            logger.LogInformation("[STORED IN VALKEY] '{Key}' cached for {Hours}h", key, (expiration?.TotalHours ?? 1).ToString("F1"));
         }
-        else
+        catch (Exception exception)
         {
-            cacheOptions.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+            logger.LogError(exception, "[CACHE ERROR] Failed to set '{Key}' in Valkey", key);
         }
-
-        memoryCache.Set(key, value, cacheOptions);
-        logger.LogInformation("Cache set for key {Key} with expiration {Expiration}", key, expiration?.TotalMinutes ?? 60);
-
-        return new ValueTask();
     }
 
-    public ValueTask RemoveAsync(string key)
+    public async ValueTask RemoveAsync(string key)
     {
-        memoryCache.Remove(key);
-        logger.LogInformation("Cache removed for key {Key}", key);
-        return new ValueTask();
+        try
+        {
+            await distributedCache.RemoveAsync(key);
+            logger.LogInformation("[CACHE REMOVED] '{Key}' removed from Valkey", key);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "[CACHE ERROR] Failed to remove '{Key}' from Valkey", key);
+        }
     }
 }
