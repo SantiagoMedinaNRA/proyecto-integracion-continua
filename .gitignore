@@ -33,3 +33,5 @@ bld/
 # Cache and temp
 .cache/
 *.tmp
+
+.kiro/
