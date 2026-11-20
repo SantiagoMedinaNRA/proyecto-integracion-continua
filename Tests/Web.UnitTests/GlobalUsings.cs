@@ -1,7 +1,16 @@
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
+global using System.Text;
+global using System.Text.Json;
 global using System.Threading.Tasks;
+global using System.Net;
+global using System.Net.Http;
 global using Xunit;
 global using NSubstitute;
 global using Shouldly;
+global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
+global using Shared.Models;
+global using Shared.Configuration;
+global using Web.Services;
