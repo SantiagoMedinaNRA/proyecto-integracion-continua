@@ -34,4 +34,9 @@ bld/
 .cache/
 *.tmp
 
+# Jenkins
+jenkins_home/
+jenkins/.env
+
+# Kiro
 .kiro/
