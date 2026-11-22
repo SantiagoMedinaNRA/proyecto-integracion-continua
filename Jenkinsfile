@@ -58,20 +58,21 @@ pipeline {
                 echo "[TEST INTEGRATION] Starting integration tests..."
                 sh '''
                     echo "[TEST INTEGRATION] Bringing up docker compose..."
-                    docker compose up -d
-                    
-                    echo "[TEST INTEGRATION] Waiting for services..."
-                    sleep 5
-                    
-                    echo "[TEST INTEGRATION] Testing Api endpoint..."
-                    curl -f http://localhost:5000/api/characters?page=1 > /dev/null
-                    
-                    if [ $? -eq 0 ]; then
-                        echo "[TEST INTEGRATION] Api endpoint OK"
-                    else
-                        echo "[TEST INTEGRATION] Api endpoint FAILED"
-                        exit 1
-                    fi
+                    docker compose --env-file .env.ci up -d --build
+
+                    echo "[TEST INTEGRATION] Waiting for Api to answer from the Web container..."
+                    for i in $(seq 1 30); do
+                        if docker exec potter-web curl -fs http://api:8000/health; then
+                            echo ""
+                            echo "[TEST INTEGRATION] Web -> Api by service name OK"
+                            exit 0
+                        fi
+                        sleep 2
+                    done
+
+                    echo "[TEST INTEGRATION] Web could not reach Api after 60s"
+                    docker compose --env-file .env.ci logs api
+                    exit 1
                 '''
             }
         }
@@ -81,7 +82,7 @@ pipeline {
         always {
             echo "[CLEANUP] Cleaning up resources..."
             sh '''
-                docker compose down 2>/dev/null || true
+                docker compose --env-file .env.ci down 2>/dev/null || true
                 echo "[CLEANUP] Docker compose cleaned up"
             '''
         }
