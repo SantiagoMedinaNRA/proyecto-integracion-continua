@@ -79,3 +79,18 @@ docker compose down
 ### Variables de entorno
 
 Ver `.env.example` para la configuración. El archivo `.env` se crea automáticamente desde el ejemplo.
+
+## 🔧 Integración continua con Jenkins
+
+El pipeline está definido en `Jenkinsfile` (raíz) y Jenkins corre en su propio contenedor (`jenkins/`).
+
+**Levantar Jenkins**
+```powershell
+cd jenkins
+docker compose up -d --build
+```
+Interfaz: http://localhost:8080
+
+**Etapas del pipeline:** Checkout → Build (imágenes `potter-api` y `potter-web`) → Test (pruebas unitarias + prueba de integración Web → Api por nombre de servicio) → Post (limpieza y resultado).
+
+**Disparo:** Poll SCM cada 15 minutos sobre la rama `main`.
