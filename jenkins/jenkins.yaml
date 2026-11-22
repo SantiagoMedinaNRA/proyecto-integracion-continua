@@ -5,8 +5,9 @@ jenkins:
     local:
       allowsSignup: false
       users:
-        - id: "${JENKINS_ADMIN_ID:-admin}"
-          password: "${JENKINS_ADMIN_PASSWORD:-password123}"
+        # Valores inyectados desde jenkins/.env a través de docker-compose
+        - id: "${JENKINS_ADMIN_ID}"
+          password: "${JENKINS_ADMIN_PASSWORD}"
   authorizationStrategy:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
