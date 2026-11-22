@@ -39,7 +39,7 @@ public class MoviesServiceTests
 
         // Then
         result.ShouldBe(expectedMovies);
-        result.Count.ShouldBe(3);
+        result.Count.ShouldBe(2);
         await potterDbBroker.Received(1).GetMoviesAsync();
         await cacheBroker.Received(1).SetAsync(CacheKeys.AllMovies, expectedMovies);
         logger.ReceivedWithAnyArgs().LogInformation("Fetching movies from PotterDB");
